@@ -1,0 +1,297 @@
+openapi: 3.0.3
+info:
+  title: Giphy API - Angular SPA Subset
+  version: 1.0.0
+  description: Specifica completa dell'API Giphy allineata alla documentazione ufficiale (inclusi Analytics, Emoji e Image Objects).
+servers:
+  - url: https://api.giphy.com/v1
+
+paths:
+  /gifs/search:
+    get:
+      summary: Cerca GIFs per termine
+      operationId: searchGifs
+      parameters:
+        - name: api_key
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          required: true
+          description: Il termine di ricerca
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Risposta di successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifResponse'
+
+  /gifs/trending:
+    get:
+      summary: Ottieni le GIF di tendenza
+      operationId: getTrendingGifs
+      parameters:
+        - name: api_key
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Risposta di successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifResponse'
+
+  /gifs:
+    get:
+      summary: Ottieni GIF specifiche tramite ID
+      operationId: getGifsByIds
+      parameters:
+        - name: api_key
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: ids
+          in: query
+          required: true
+          description: ID multipli separati da virgola
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Risposta di successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifResponse'
+
+components:
+  schemas:
+    GifResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Gif'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        meta:
+          $ref: '#/components/schemas/Meta'
+
+    Gif:
+      type: object
+      description: The standard GIF Object
+      properties:
+        type:
+          type: string
+          default: gif
+        id:
+          type: string
+        slug:
+          type: string
+        url:
+          type: string
+        bitly_url:
+          type: string
+        embed_url:
+          type: string
+        username:
+          type: string
+        source:
+          type: string
+        rating:
+          type: string
+        content_url:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        source_tld:
+          type: string
+        source_post_url:
+          type: string
+        update_datetime:
+          type: string
+        create_datetime:
+          type: string
+        import_datetime:
+          type: string
+        trending_datetime:
+          type: string
+        images:
+          $ref: '#/components/schemas/Images'
+        title:
+          type: string
+        alt_text:
+          type: string
+        is_low_contrast:
+          type: boolean
+        analytics:
+          $ref: '#/components/schemas/Analytics'
+
+    Emoji:
+      allOf:
+        - $ref: '#/components/schemas/Gif'
+        - type: object
+          properties:
+            variation_count:
+              type: integer
+              description: The number of variations associated with the emoji
+
+    Images:
+      type: object
+      description: Object containing all available renditions of the GIF
+      properties:
+        fixed_height:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_height_still:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_height_downsampled:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_width:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_width_still:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_width_downsampled:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_height_small:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_height_small_still:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_width_small:
+          $ref: '#/components/schemas/ImageRendition'
+        fixed_width_small_still:
+          $ref: '#/components/schemas/ImageRendition'
+        downsized:
+          $ref: '#/components/schemas/ImageRendition'
+        downsized_still:
+          $ref: '#/components/schemas/ImageRendition'
+        downsized_large:
+          $ref: '#/components/schemas/ImageRendition'
+        downsized_medium:
+          $ref: '#/components/schemas/ImageRendition'
+        downsized_small:
+          $ref: '#/components/schemas/ImageRendition'
+        original:
+          $ref: '#/components/schemas/ImageRendition'
+        original_still:
+          $ref: '#/components/schemas/ImageRendition'
+        looping:
+          $ref: '#/components/schemas/ImageRendition'
+        preview:
+          $ref: '#/components/schemas/ImageRendition'
+        preview_gif:
+          $ref: '#/components/schemas/ImageRendition'
+
+    ImageRendition:
+      type: object
+      properties:
+        url:
+          type: string
+        width:
+          type: string
+        height:
+          type: string
+        size:
+          type: string
+        frames:
+          type: string
+        mp4:
+          type: string
+        mp4_size:
+          type: string
+        webp:
+          type: string
+        webp_size:
+          type: string
+
+    User:
+      type: object
+      properties:
+        avatar_url:
+          type: string
+        banner_url:
+          type: string
+        profile_url:
+          type: string
+        username:
+          type: string
+        display_name:
+          type: string
+
+    Meta:
+      type: object
+      required:
+        - msg
+        - status
+      properties:
+        msg:
+          type: string
+          description: HTTP Response Message
+        status:
+          type: integer
+          description: HTTP Response Code
+        response_id:
+          type: string
+          description: A unique ID paired with this response from the API
+
+    Pagination:
+      type: object
+      properties:
+        total_count:
+          type: integer
+        count:
+          type: integer
+        offset:
+          type: integer
+
+    RandomId:
+      type: object
+      properties:
+        random_id:
+          type: string
+          description: Random ID hash
+
+    Analytics:
+      type: object
+      properties:
+        onload:
+          $ref: '#/components/schemas/AnalyticsEvent'
+        onclick:
+          $ref: '#/components/schemas/AnalyticsEvent'
+        onsent:
+          $ref: '#/components/schemas/AnalyticsEvent'
+
+    AnalyticsEvent:
+      type: object
+      properties:
+        url:
+          type: string
