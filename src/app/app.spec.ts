@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [provideHttpClient()],
     }).compileComponents();
   });
 
@@ -14,10 +16,15 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should render the tablist with two tabs', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Giphy-app');
+    const host = fixture.nativeElement as HTMLElement;
+    const tablist = host.querySelector('[role="tablist"]');
+    const tabs = host.querySelectorAll('[role="tab"]');
+    expect(tablist).not.toBeNull();
+    expect(tabs.length).toBe(2);
+    expect(tabs[0].textContent?.trim()).toBe('Lista GIFs');
+    expect(tabs[1].textContent?.trim()).toBe('Preferiti');
   });
 });

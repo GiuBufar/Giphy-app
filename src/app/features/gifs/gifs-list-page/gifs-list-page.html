@@ -1,0 +1,46 @@
+<section class="gifs-page">
+  <header class="gifs-page__header">
+    <h1 class="gifs-page__title">Lista GIFs</h1>
+    <app-searchbar [value]="query()" (search)="onSearch($event)" />
+  </header>
+
+  @if (error()) {
+    <p class="gifs-page__error" role="alert">{{ error() }}</p>
+  }
+
+  <app-gif-grid
+    [gifs]="gifs()"
+    [favoriteIds]="storage.favoriteIds()"
+    [loading]="loading()"
+    [emptyMessage]="emptyMessage()"
+    (favoriteToggled)="onFavoriteToggled($event)"
+  />
+
+  @if (gifs().length > 0 || hasPrev()) {
+    <nav class="gifs-page__pagination" aria-label="Paginazione risultati">
+      <button
+        type="button"
+        class="gifs-page__page-btn"
+        [disabled]="!hasPrev() || loading()"
+        aria-label="Pagina precedente"
+        (click)="onPrev()"
+      >
+        ← Indietro
+      </button>
+
+      <span class="gifs-page__page-indicator" aria-live="polite">
+        Pagina {{ page() + 1 }}
+      </span>
+
+      <button
+        type="button"
+        class="gifs-page__page-btn"
+        [disabled]="!hasNext() || loading()"
+        aria-label="Pagina successiva"
+        (click)="onNext()"
+      >
+        Avanti →
+      </button>
+    </nav>
+  }
+</section>
