@@ -1,0 +1,48 @@
+@if (loading() && gifs().length === 0) {
+  <p class="gif-grid__status" role="status" aria-live="polite">Caricamento…</p>
+} @else if (gifs().length === 0) {
+  <p class="gif-grid__status" role="status" aria-live="polite">{{ emptyMessage() }}</p>
+} @else {
+  <ul class="gif-grid" role="list" [attr.aria-busy]="loading() ? 'true' : null">
+    @for (gif of gifs(); track trackById($index, gif)) {
+      <li class="gif-grid__item">
+        <figure class="gif-card" [style.aspect-ratio]="aspectRatio(gif)">
+          @if (imageUrl(gif); as url) {
+            <img
+              class="gif-card__image"
+              [src]="url"
+              [alt]="altFor(gif)"
+              [attr.width]="imageWidth(gif)"
+              [attr.height]="imageHeight(gif)"
+              loading="lazy"
+              decoding="async"
+            />
+          }
+
+          <button
+            type="button"
+            class="gif-card__heart"
+            [class.is-favorite]="isFavorite(gif)"
+            [attr.aria-pressed]="isFavorite(gif)"
+            [attr.aria-label]="isFavorite(gif) ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'"
+            (click)="onHeartClick($event, gif)"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path
+                d="M12 21s-7.5-4.6-9.5-9.1C1 8.4 3.2 5 6.6 5c2 0 3.5 1.1 4.4 2.6h2C13.9 6.1 15.4 5 17.4 5 20.8 5 23 8.4 21.5 11.9 19.5 16.4 12 21 12 21z"
+                [attr.fill]="isFavorite(gif) ? 'currentColor' : 'none'"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+
+          @if (gif.title) {
+            <figcaption class="gif-card__caption">{{ gif.title }}</figcaption>
+          }
+        </figure>
+      </li>
+    }
+  </ul>
+}
