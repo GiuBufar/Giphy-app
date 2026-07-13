@@ -1,0 +1,88 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.favorites {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.favorites__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.favorites__title {
+  margin: 0;
+  font-size: var(--font-headline-lg-mobile-size);
+  line-height: var(--font-headline-lg-mobile-line);
+  font-weight: var(--font-headline-lg-weight);
+  letter-spacing: var(--font-headline-lg-tracking);
+  color: var(--color-on-surface);
+}
+
+@media (min-width: 768px) {
+  .favorites__title {
+    font-size: var(--font-headline-lg-size);
+    line-height: var(--font-headline-lg-line);
+  }
+}
+
+.favorites__subtitle {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  font-size: var(--font-body-md-size);
+  line-height: var(--font-body-md-line);
+  max-width: 60ch;
+}
+
+.favorites__status {
+  margin: var(--space-xl) 0;
+  text-align: center;
+  color: var(--color-on-surface-variant);
+  font-size: var(--font-body-lg-size);
+  line-height: var(--font-body-lg-line);
+}
+
+.favorites__error {
+  margin: 0;
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  background: rgba(147, 0, 10, 0.35);
+  color: var(--color-on-error-container);
+  border: 1px solid var(--color-error);
+}
+
+.favorites__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  background: var(--color-glass-1);
+  backdrop-filter: var(--blur-glass-sm);
+  -webkit-backdrop-filter: var(--blur-glass-sm);
+  border: 1px solid var(--color-glass-border);
+}
+
+.favorites__empty-title {
+  margin: 0;
+  font-size: var(--font-headline-md-size);
+  line-height: var(--font-headline-md-line);
+  font-weight: var(--font-headline-md-weight);
+  color: var(--color-on-surface);
+}
+
+.favorites__empty-body {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  font-size: var(--font-body-md-size);
+  line-height: var(--font-body-md-line);
+  max-width: 48ch;
+}

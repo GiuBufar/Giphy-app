@@ -1,0 +1,29 @@
+<section class="favorites">
+  <header class="favorites__header">
+    <h1 class="favorites__title">Preferiti</h1>
+    <p class="favorites__subtitle">
+      Le GIF salvate sono sincronizzate localmente e ricaricate ogni volta che apri questo tab.
+    </p>
+  </header>
+
+  @if (error()) {
+    <p class="favorites__error" role="alert">{{ error() }}</p>
+  } @else if (loading() && visibleGifs().length === 0) {
+    <p class="favorites__status" role="status" aria-live="polite">Caricamento…</p>
+  } @else if (favoriteIds().size === 0) {
+    <section class="favorites__empty" role="status" aria-live="polite">
+      <h2 class="favorites__empty-title">Nessun preferito</h2>
+      <p class="favorites__empty-body">
+        Non hai ancora salvato nessuna GIF. Torna alla Lista GIFs e clicca il cuore per aggiungerne.
+      </p>
+    </section>
+  } @else {
+    <app-gif-grid
+      [gifs]="visibleGifs()"
+      [favoriteIds]="favoriteIds()"
+      [loading]="loading()"
+      emptyMessage="Nessun preferito"
+      (favoriteToggled)="onFavoriteToggled($event)"
+    />
+  }
+</section>
